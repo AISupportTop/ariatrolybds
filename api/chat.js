@@ -46,8 +46,8 @@ function toTextOnly(messages) {
 
 // ── Groq Vision: phân tích ảnh BĐS ──────────────────────────
 async function callGroqVision(groqKey, systemPrompt, visionMsg, userText) {
-    // Groq hỗ trợ Llama 4 Scout với vision
-    const GROQ_VISION_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+    // Groq hỗ trợ Llama 3.2 Vision
+    const GROQ_VISION_MODEL = 'llama-3.2-90b-vision-preview';
     const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 
     const imageContent = visionMsg.content; // Array với image_url + text
