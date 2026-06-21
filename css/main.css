@@ -436,7 +436,7 @@ img { max-width: 100%; border-radius: var(--radius); }
   padding: 12px 16px;
   border-radius: 16px;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .msg.ai .msg-bubble {
@@ -1339,10 +1339,10 @@ img { max-width: 100%; border-radius: var(--radius); }
   flex-shrink: 0;
 }
 
-/* ── Markdown Content ── */
-.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+/* 🔤 Markdown Content 🔤 */
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
   color: var(--gold);
-  margin: 12px 0 6px;
+  margin: 10px 0 4px;
 }
 
 .markdown-body p { margin-bottom: 8px; }

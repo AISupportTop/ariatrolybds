@@ -58,19 +58,18 @@ async function callGroqVision(groqKey, systemPrompt, visionMsg, userText) {
         ...imageContent,
         {
             type: 'text',
-            text: userText || `Bạn là chuyên gia bất động sản và pháp lý nhà đất Việt Nam. Hãy phân tích chi tiết hình ảnh này.
+            text: userText || `Bạn là chuyên gia bất động sản và pháp lý nhà đất Việt Nam. Hãy phân tích hình ảnh này, trả lời NGẮN GỌN, CHUYÊN NGHIỆP, KHÔNG dùng các ký hiệu thừa (như ####).
 Nếu hình ảnh là GIẤY TỜ PHÁP LÝ (Sổ Đỏ, Sổ Hồng, Giấy chứng nhận quyền sử dụng đất):
-1. Trích xuất CHÍNH XÁC các thông tin: Số vào sổ, Số thửa đất, Số tờ bản đồ, Địa chỉ, Diện tích, Hình thức sử dụng, Mục đích sử dụng. (MỌI THÔNG TIN TRÍCH XUẤT PHẢI ĐƯỢC BỌC TRONG THẺ <strong style="color:red">Nội dung</strong> để làm nổi bật màu đỏ).
-2. Phân tích mã QR (thường ở góc trên bên phải): Hãy cố gắng giải mã hoặc cho biết mã QR này chứa thông tin gì để kiểm tra thật giả.
-3. Hướng dẫn tra cứu quy hoạch: Dựa trên địa chỉ, số tờ, số thửa, hãy hướng dẫn cách tra cứu sơ đồ quy hoạch trực tuyến.
-4. Google Maps: Hướng dẫn cách định vị chính xác vị trí thửa đất này trên Google Maps.
+1. Quét và trích xuất các thông tin: Số vào sổ, Số thửa đất, Số tờ bản đồ, Địa chỉ, Diện tích, Hình thức sử dụng, Mục đích sử dụng. (MỌI THÔNG TIN QUÉT ĐƯỢC PHẢI ĐƯỢC BỌC TRONG KÝ HIỆU ==Thông tin== để làm nổi bật màu vàng chanh).
+2. Tự động scan mã QR (ở góc phải sổ): Cố gắng đọc mã QR và đối chiếu thông tin mã QR với thông tin in trên sổ xem có khớp không.
+3. Hướng dẫn tra cứu quy hoạch (ngắn gọn): Dựa trên số tờ, số thửa, địa chỉ.
+4. Google Maps (ngắn gọn): Hướng dẫn tìm vị trí lô đất.
 
-Nếu hình ảnh là BẤT ĐỘNG SẢN THỰC TẾ (Nhà, Đất, Căn hộ...):
-1. 🏠 Loại BĐS: nhà phố, căn hộ, đất trống... Các thông tin chính phải bọc trong <strong style="color:red">Nội dung</strong>.
-2. 🔍 Tình trạng & Kết cấu: mới/cũ, tường, cột, trần...
+Nếu hình ảnh là BẤT ĐỘNG SẢN THỰC TẾ:
+1. 🏠 Loại BĐS: Thông tin cốt lõi bọc trong ==Nội dung==.
+2. 🔍 Tình trạng & Kết cấu.
 3. ✅ Ưu/Nhược điểm & 💰 Ước tính chi phí cải tạo (nếu cần).
-4. 📊 Đánh giá phân khúc và định giá sơ bộ.
-Trả lời bằng tiếng Việt, chi tiết, chuyên nghiệp và trình bày rõ ràng.`
+4. 📊 Định giá sơ bộ.`
         }
     ];
 
