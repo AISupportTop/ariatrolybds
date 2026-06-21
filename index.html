@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIA BĐS — Trợ Lý AI Bất Động Sản Chuyên Nghiệp</title>
+    <meta name="description" content="ARIA - Trợ lý AI chuyên gia bất động sản: Tư vấn pháp lý, phân tích đầu tư, tạo nội dung marketing, quản lý lead và chốt sale nhanh chóng.">
+    <meta name="theme-color" content="#d4a424">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">🏠</div>
+            <div class="logo-text">ARIA BĐS</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-item active" data-tab="chat" onclick="switchTab('chat')">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Chat AI</span>
+            </div>
+            <div class="nav-item" data-tab="properties" onclick="switchTab('properties')">
+                <span class="nav-icon">🏘️</span>
+                <span class="nav-label">Danh mục BĐS</span>
+            </div>
+            <div class="nav-item" data-tab="leads" onclick="switchTab('leads')">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Khách hàng</span>
+                <span class="nav-badge" id="leadNavBadge">0</span>
+            </div>
+            <div class="nav-item" data-tab="content" onclick="switchTab('content')">
+                <span class="nav-icon">📣</span>
+                <span class="nav-label">Tạo nội dung</span>
+            </div>
+            <div class="nav-item" data-tab="dashboard" onclick="switchTab('dashboard')">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Thống kê</span>
+            </div>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="nav-item" onclick="clearChatHistory()" title="Xóa lịch sử chat">
+                <span class="nav-icon">🔄</span>
+                <span class="nav-label">Chat mới</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div>
+                <div class="topbar-title" id="topbarTitle">💬 Chat AI Tư Vấn</div>
+                <div class="topbar-subtitle">ARIA BĐS · Chuyên gia Bất Động Sản AI</div>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn btn-primary btn-sm" id="topbarActionBtn" onclick="handleTopbarAction()">
+                    ➕ Thêm BĐS
+                </button>
+            </div>
+        </header>
+
+        <!-- ════════ TAB: CHAT ════════ -->
+        <section class="tab-content active" id="tab-chat">
+            <div class="chat-layout">
+
+                <!-- Chat Panel -->
+                <div class="chat-panel">
+                    <div class="chat-messages" id="chatMessages"></div>
+
+                    <!-- Image Preview Bar -->
+                    <div id="imagePreviewBar" style="display:none;align-items:center;gap:10px;padding:8px 24px;background:var(--gold-alpha);border-top:1px solid var(--border-gold)">
+                        <img id="imagePreviewThumb" src="" style="height:40px;width:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border-gold)">
+                        <span id="imagePreviewName" style="font-size:0.82rem;color:var(--gold);flex:1"></span>
+                        <span style="font-size:0.75rem;color:var(--text-muted)">📸 Ảnh BĐS đính kèm</span>
+                        <button onclick="removeImagePreview()" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:1.1rem" title="Xóa ảnh">✕</button>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="chat-input-area">
+                        <div class="chat-input-row">
+                            <div class="chat-input-wrap">
+                                <textarea id="chatInput" placeholder="Hỏi về BĐS, tra cứu sổ đỏ, tìm sản phẩm... (Ctrl+Enter để gửi)" rows="1"></textarea>
+                                <div class="input-tools">
+                                    <button class="tool-btn" id="btnUploadImage" title="Upload ảnh BĐS để AI phân tích">
+                                        📸 Phân tích ảnh
+                                    </button>
+                                    <button class="tool-btn" onclick="quickPrompt('Khách hỏi giá BĐS 3 tỷ tại Quận 9 TP.HCM, tư vấn cho tôi')">
+                                        🔍 Tìm sản phẩm
+                                    </button>
+                                    <button class="tool-btn" onclick="quickPrompt('Tôi cần kịch bản chốt sale cho khách đang phân vân vì giá cao')">
+                                        🎯 Kịch bản sale
+                                    </button>
+                                    <button class="tool-btn" onclick="quickPrompt('Hướng dẫn tôi kiểm tra pháp lý sổ đỏ bất động sản')">
+                                        📜 Tra cứu pháp lý
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn-send" id="btnSend" title="Gửi (Enter)">➤</button>
+                        </div>
+                        <input type="file" id="chatImageInput" accept="image/*" style="display:none" multiple>
+                    </div>
+                </div>
+
+                <!-- Properties Sidebar -->
+                <aside class="chat-sidebar">
+                    <div class="chat-sidebar-header">🏘️ Sản phẩm gợi ý</div>
+                    <div class="chat-sidebar-scroll" id="chatPropList"></div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ════════ TAB: PROPERTIES ════════ -->
+        <section class="tab-content" id="tab-properties">
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" placeholder="Tìm theo tên, địa chỉ, số sổ..." id="propSearch" oninput="applyPropFilter()">
+                </div>
+                <select class="filter-select" id="filterType" onchange="applyPropFilter()">
+                    <option value="all">Tất cả loại</option>
+                    <option value="can_ho">🏢 Căn hộ</option>
+                    <option value="nha_pho">🏘️ Nhà phố</option>
+                    <option value="biet_thu">🏰 Biệt thự</option>
+                    <option value="dat_nen">🌍 Đất nền</option>
+                    <option value="mat_bang">🏪 Mặt bằng</option>
+                </select>
+                <select class="filter-select" id="filterStatus" onchange="applyPropFilter()">
+                    <option value="all">Tất cả TT</option>
+                    <option value="dang_ban">Đang bán</option>
+                    <option value="cho_thue">Cho thuê</option>
+                    <option value="tam_giu">Tạm giữ</option>
+                    <option value="da_ban">Đã bán</option>
+                </select>
+                <button class="btn btn-primary" onclick="openAddPropModal()">➕ Thêm BĐS</button>
+            </div>
+
+            <!-- Property Grid -->
+            <div class="scroll-area">
+                <div class="prop-grid" id="propGrid"></div>
+            </div>
+        </section>
+
+        <!-- ════════ TAB: LEADS ════════ -->
+        <section class="tab-content" id="tab-leads">
+
+            <!-- Lead Stats -->
+            <div style="padding:16px 24px;border-bottom:1px solid var(--border);background:var(--bg-secondary)">
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+                    <div class="stat-card" style="padding:12px 16px;flex:0">
+                        <div class="stat-icon" style="background:var(--gold-alpha)">👥</div>
+                        <div><div class="stat-value" id="leadStat_total">0</div><div class="stat-label">Tổng lead</div></div>
+                    </div>
+                    <div class="stat-card" style="padding:12px 16px;flex:0">
+                        <div class="stat-icon" style="background:var(--info-alpha)">🆕</div>
+                        <div><div class="stat-value" id="leadStat_moi">0</div><div class="stat-label">Lead mới</div></div>
+                    </div>
+                    <div class="stat-card" style="padding:12px 16px;flex:0">
+                        <div class="stat-icon" style="background:var(--warning-alpha)">🔥</div>
+                        <div><div class="stat-value" id="leadStat_dangCham">0</div><div class="stat-label">Đang chăm</div></div>
+                    </div>
+                    <div class="stat-card" style="padding:12px 16px;flex:0">
+                        <div class="stat-icon" style="background:var(--success-alpha)">✅</div>
+                        <div><div class="stat-value" id="leadStat_daChot">0</div><div class="stat-label">Đã chốt</div></div>
+                    </div>
+                    <div style="margin-left:auto;display:flex;gap:8px">
+                        <select class="filter-select" id="leadFilterStatus" onchange="renderLeads(this.value)">
+                            <option value="all">Tất cả</option>
+                            <option value="moi">Mới</option>
+                            <option value="dang_cham">Đang chăm</option>
+                            <option value="xem_nha">Xem nhà</option>
+                            <option value="da_chot">Đã chốt</option>
+                            <option value="that_bai">Thất bại</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openAddLeadModal()">➕ Thêm lead</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads List -->
+            <div class="scroll-area">
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="leadsList"></div>
+            </div>
+        </section>
+
+        <!-- ════════ TAB: CONTENT ════════ -->
+        <section class="tab-content" id="tab-content">
+            <div class="scroll-area">
+                <div style="max-width:840px;margin:0 auto">
+
+                    <div class="form-section">
+                        <div class="form-section-title">🏠 Chọn Bất Động Sản</div>
+                        <select class="form-select" id="contentPropSelect" onchange="_contentSelectedPropId=this.value">
+                            <option value="">-- Chọn BĐS để tạo nội dung --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">📝 Loại Nội Dung</div>
+                        <div class="content-type-grid">
+                            <button class="content-type-btn selected" data-type="facebook" onclick="selectContentType('facebook')">
+                                <div class="content-type-icon">📘</div>
+                                <div class="content-type-name">Facebook</div>
+                                <div class="content-type-desc">Bài đăng + hashtag</div>
+                            </button>
+                            <button class="content-type-btn" data-type="zalo" onclick="selectContentType('zalo')">
+                                <div class="content-type-icon">💬</div>
+                                <div class="content-type-name">Zalo</div>
+                                <div class="content-type-desc">Tin nhắn ngắn gọn</div>
+                            </button>
+                            <button class="content-type-btn" data-type="email" onclick="selectContentType('email')">
+                                <div class="content-type-icon">📧</div>
+                                <div class="content-type-name">Email</div>
+                                <div class="content-type-desc">Email marketing</div>
+                            </button>
+                            <button class="content-type-btn" data-type="description" onclick="selectContentType('description')">
+                                <div class="content-type-icon">📄</div>
+                                <div class="content-type-name">Mô tả</div>
+                                <div class="content-type-desc">Cho website/app</div>
+                            </button>
+                            <button class="content-type-btn" data-type="analysis" onclick="selectContentType('analysis')">
+                                <div class="content-type-icon">📊</div>
+                                <div class="content-type-name">Phân tích</div>
+                                <div class="content-type-desc">Tiềm năng đầu tư</div>
+                            </button>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg" id="btnGenerateContent" onclick="generateContent()" style="width:100%">
+                            ✨ Tạo Nội Dung
+                        </button>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">📋 Nội Dung Được Tạo</div>
+                        <div class="content-output" id="contentOutput" style="position:relative">
+                            <div class="empty-state" style="padding:30px">
+                                <div class="empty-state-icon">✍️</div>
+                                <div class="empty-state-text">Chọn BĐS và loại nội dung, sau đó nhấn "Tạo Nội Dung"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════ TAB: DASHBOARD ════════ -->
+        <section class="tab-content" id="tab-dashboard">
+            <div class="scroll-area">
+
+                <!-- Stats Row -->
+                <div class="stats-row" style="margin-bottom:24px">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--gold-alpha);color:var(--gold)">🏘️</div>
+                        <div>
+                            <div class="stat-value" id="dash_total_prop">0</div>
+                            <div class="stat-label">Tổng BĐS</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--success-alpha);color:var(--success)">🔥</div>
+                        <div>
+                            <div class="stat-value" id="dash_dang_ban">0</div>
+                            <div class="stat-label">Đang bán</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--blue-alpha);color:var(--blue-light)">🏠</div>
+                        <div>
+                            <div class="stat-value" id="dash_cho_thue">0</div>
+                            <div class="stat-label">Cho thuê</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--info-alpha);color:var(--info)">✅</div>
+                        <div>
+                            <div class="stat-value" id="dash_da_ban">0</div>
+                            <div class="stat-label">Đã bán</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--warning-alpha);color:var(--warning)">👥</div>
+                        <div>
+                            <div class="stat-value" id="dash_total_lead">0</div>
+                            <div class="stat-label">Tổng lead</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--danger-alpha);color:var(--danger)">🆕</div>
+                        <div>
+                            <div class="stat-value" id="dash_lead_moi">0</div>
+                            <div class="stat-label">Lead mới</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:var(--gold-alpha);color:var(--gold)">🏆</div>
+                        <div>
+                            <div class="stat-value" id="dash_da_chot">0</div>
+                            <div class="stat-label">Đã chốt</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two columns -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+
+                    <!-- Recent Properties -->
+                    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+                        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                            <div class="form-section-title" style="margin:0">🏘️ BĐS Mới Nhất</div>
+                            <button class="btn btn-ghost btn-sm" onclick="switchTab('properties')">Xem tất cả →</button>
+                        </div>
+                        <div id="dash_recent_props"></div>
+                    </div>
+
+                    <!-- Recent Leads -->
+                    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+                        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                            <div class="form-section-title" style="margin:0">👥 Khách Hàng Mới Nhất</div>
+                            <button class="btn btn-ghost btn-sm" onclick="switchTab('leads')">Xem tất cả →</button>
+                        </div>
+                        <div id="dash_recent_leads"></div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div style="margin-top:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px">
+                    <div class="form-section-title">⚡ Thao Tác Nhanh</div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+                        <button class="btn btn-primary" onclick="switchTab('chat');quickPrompt('Phân tích thị trường BĐS TP.HCM tháng này')">📊 Phân tích thị trường</button>
+                        <button class="btn btn-secondary" onclick="openAddPropModal();switchTab('properties')">➕ Thêm BĐS mới</button>
+                        <button class="btn btn-secondary" onclick="openAddLeadModal();switchTab('leads')">👥 Thêm khách hàng</button>
+                        <button class="btn btn-secondary" onclick="switchTab('chat');quickPrompt('Tạo cho tôi kịch bản chốt sale chuẩn cho môi giới BĐS')">🎯 Kịch bản chốt sale</button>
+                        <button class="btn btn-secondary" onclick="switchTab('chat');quickPrompt('Hướng dẫn tra cứu quy hoạch BĐS online trên các trang chính phủ')">🗺️ Tra cứu quy hoạch</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ════════ MODAL: ADD/EDIT PROPERTY ════════ -->
+<div class="modal-overlay" id="propModal">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h2 class="modal-title" id="propModalTitle">➕ Thêm Bất Động Sản Mới</h2>
+            <button class="modal-close" onclick="closeModal('propModal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="propId">
+            <form id="propForm" onsubmit="event.preventDefault()">
+
+                <!-- Thông tin cơ bản -->
+                <div class="form-section">
+                    <div class="form-section-title">🏠 Thông Tin Cơ Bản</div>
+                    <div class="form-group">
+                        <label class="form-label">Tiêu đề BĐS <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="propTitle" placeholder="VD: Nhà phố 4 tầng Quận 1 - Mặt tiền Nguyễn Huệ">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Loại hình</label>
+                            <select class="form-select" id="propType">
+                                <option value="nha_pho">🏘️ Nhà phố</option>
+                                <option value="can_ho">🏢 Căn hộ</option>
+                                <option value="biet_thu">🏰 Biệt thự</option>
+                                <option value="dat_nen">🌍 Đất nền</option>
+                                <option value="mat_bang">🏪 Mặt bằng</option>
+                                <option value="khac">🏗️ Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Trạng thái</label>
+                            <select class="form-select" id="propStatus">
+                                <option value="dang_ban">✅ Đang bán</option>
+                                <option value="cho_thue">🏠 Cho thuê</option>
+                                <option value="tam_giu">⏳ Tạm giữ</option>
+                                <option value="da_ban">💰 Đã bán</option>
+                                <option value="cho_gia">🕐 Chờ giá</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vị trí -->
+                <div class="form-section">
+                    <div class="form-section-title">📍 Vị Trí & Địa Chỉ</div>
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ đầy đủ <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="propAddrFull" placeholder="VD: 123 Đường Lê Lợi, Phường Bến Thành, Quận 1, TP.HCM">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Quận/Huyện</label>
+                            <input type="text" class="form-input" id="propAddrDistrict" placeholder="VD: Quận 1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tỉnh/Thành phố</label>
+                            <input type="text" class="form-input" id="propAddrCity" placeholder="VD: TP.HCM" oninput="updateGovLinksPreview()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">🗺️ Link Google Maps</label>
+                        <input type="url" class="form-input" id="propMapLink" placeholder="https://maps.google.com/?q=...">
+                        <div class="form-hint">Nhấn chuột phải trên Google Maps → "Chia sẻ hoặc nhúng bản đồ" → Sao chép link</div>
+                    </div>
+                </div>
+
+                <!-- Pháp lý -->
+                <div class="form-section">
+                    <div class="form-section-title">📜 Thông Tin Pháp Lý & Sổ Sách</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Số sổ (GCN QSDĐ)</label>
+                            <input type="text" class="form-input" id="propSoSo" placeholder="VD: BS 012345 hoặc TP/2020/012345">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Loại sổ</label>
+                            <select class="form-select" id="propLoaiSo">
+                                <option value="so_hong">📕 Sổ hồng</option>
+                                <option value="so_do">📗 Sổ đỏ</option>
+                                <option value="dang_lam_so">⏳ Đang làm sổ</option>
+                                <option value="chua_co_so">⚠️ Chưa có sổ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label class="form-label">Số tờ bản đồ</label>
+                            <input type="text" class="form-input" id="propSoTo" placeholder="VD: 15">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số thửa đất</label>
+                            <input type="text" class="form-input" id="propSoThua" placeholder="VD: 234">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tình trạng pháp lý</label>
+                            <select class="form-select" id="propTinhTrangPhapLy">
+                                <option value="co_so_day_du">✅ Sổ đầy đủ</option>
+                                <option value="dang_lam_so">⏳ Đang làm sổ</option>
+                                <option value="chua_co_so">⚠️ Chưa có sổ</option>
+                                <option value="tranh_chap">🚫 Tranh chấp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ghi chú pháp lý</label>
+                        <input type="text" class="form-input" id="propGhiChuPhapLy" placeholder="VD: Sổ hồng chính chủ, không tranh chấp, không thế chấp">
+                    </div>
+
+                    <!-- Tra cứu quy hoạch online -->
+                    <div style="background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:4px">
+                        <div style="font-size:0.8rem;font-weight:600;color:var(--gold);margin-bottom:10px">🏛️ Tra cứu quy hoạch online (theo tỉnh/thành)</div>
+                        <div id="govLinksContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Chính chủ -->
+                <div class="form-section">
+                    <div class="form-section-title">👤 Thông Tin Chủ / Người Liên Hệ</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Họ tên chủ nhà</label>
+                            <input type="text" class="form-input" id="propOwnerName" placeholder="VD: Nguyễn Văn A">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SĐT liên hệ chính</label>
+                            <input type="tel" class="form-input" id="propOwnerPhone" placeholder="VD: 0901234567">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">SĐT phụ</label>
+                            <input type="tel" class="form-input" id="propOwnerPhone2" placeholder="Tùy chọn">
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:6px">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="propIsDirectOwner" checked>
+                                ✅ Chính chủ (Bán thẳng không qua môi giới)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ghi chú về chủ nhà</label>
+                        <input type="text" class="form-input" id="propOwnerNote" placeholder="VD: Chủ cần bán gấp, có thể gặp trực tiếp">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tên môi giới (nếu có)</label>
+                            <input type="text" class="form-input" id="propAgentName" placeholder="Tên môi giới">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SĐT môi giới</label>
+                            <input type="tel" class="form-input" id="propAgentPhone" placeholder="SĐT môi giới">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Giá -->
+                <div class="form-section">
+                    <div class="form-section-title">💰 Giá & Diện Tích</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Giá (VNĐ)</label>
+                            <input type="number" class="form-input" id="propPrice" placeholder="VD: 8500000000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Đơn vị</label>
+                            <select class="form-select" id="propPriceUnit">
+                                <option value="vnd">VNĐ (bán)</option>
+                                <option value="vnd/thang">VNĐ/tháng (thuê)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:-8px">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="propNegotiable"> Có thể thương lượng giá
+                        </label>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label class="form-label">Diện tích (m²)</label>
+                            <input type="number" class="form-input" id="propArea" placeholder="VD: 120">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mặt tiền (m)</label>
+                            <input type="number" class="form-input" id="propFrontage" step="0.1" placeholder="VD: 5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Chiều sâu (m)</label>
+                            <input type="number" class="form-input" id="propDepth" step="0.1" placeholder="VD: 20">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đặc điểm -->
+                <div class="form-section">
+                    <div class="form-section-title">🏗️ Đặc Điểm & Thông Số</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phòng ngủ</label>
+                            <input type="number" class="form-input" id="propBedrooms" placeholder="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WC / Nhà tắm</label>
+                            <input type="number" class="form-input" id="propBathrooms" placeholder="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số tầng</label>
+                            <input type="number" class="form-input" id="propFloors" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Hướng nhà / Hướng ban công</label>
+                        <select class="form-select" id="propDirection">
+                            <option value="">-- Chọn hướng --</option>
+                            <option>Đông</option><option>Tây</option><option>Nam</option><option>Bắc</option>
+                            <option>Đông Nam</option><option>Tây Nam</option><option>Đông Bắc</option><option>Tây Bắc</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Điểm nổi bật (mỗi điểm 1 dòng)</label>
+                        <textarea class="form-textarea" id="propHighlights" rows="3" placeholder="VD: Mặt tiền đường lớn&#10;Pháp lý sạch&#10;Gần trung tâm"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mô tả chi tiết</label>
+                        <textarea class="form-textarea" id="propDescription" rows="4" placeholder="Mô tả tổng quan về bất động sản..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Hình ảnh -->
+                <div class="form-section">
+                    <div class="form-section-title">📸 Hình Ảnh Bất Động Sản</div>
+                    <div class="upload-zone" id="propUploadZone">
+                        <input type="file" accept="image/*" multiple onchange="handlePropImageUpload(this)">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Kéo thả ảnh vào đây hoặc nhấn để chọn</div>
+                        <div class="upload-hint">Hỗ trợ JPG, PNG, WEBP · Tối đa 10MB/ảnh · Nhiều ảnh</div>
+                    </div>
+                    <div class="image-preview-grid" id="propImagePreview"></div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('propModal')">Hủy</button>
+            <button class="btn btn-primary" onclick="savePropForm()">💾 Lưu Bất Động Sản</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ MODAL: PROPERTY DETAIL ════════ -->
+<div class="modal-overlay" id="detailModal">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h2 class="modal-title" id="detailModalTitle"></h2>
+            <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+        </div>
+        <div class="modal-body" id="detailModalBody"></div>
+    </div>
+</div>
+
+<!-- ════════ MODAL: ADD LEAD ════════ -->
+<div class="modal-overlay" id="leadModal">
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <h2 class="modal-title">👥 Thêm Khách Hàng Tiềm Năng</h2>
+            <button class="modal-close" onclick="closeModal('leadModal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="leadId">
+            <form id="leadForm" onsubmit="event.preventDefault()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Họ tên <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="leadName" placeholder="Nguyễn Văn A">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Điện thoại <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="leadPhone" placeholder="0901234567">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="leadEmail" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nhu cầu</label>
+                    <input type="text" class="form-input" id="leadNhuCau" placeholder="VD: Mua nhà phố Quận 3 khoảng 7-10 tỷ để ở">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Loại BĐS quan tâm</label>
+                        <select class="form-select" id="leadLoaiBds">
+                            <option value="">-- Chọn --</option>
+                            <option>Nhà phố</option><option>Căn hộ</option><option>Đất nền</option>
+                            <option>Biệt thự</option><option>Mặt bằng</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngân sách</label>
+                        <input type="text" class="form-input" id="leadNganSach" placeholder="VD: 3-5 tỷ">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Khu vực mong muốn</label>
+                        <input type="text" class="form-input" id="leadKhuVuc" placeholder="VD: Quận Bình Thạnh">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nguồn đến</label>
+                        <select class="form-select" id="leadNguon">
+                            <option value="chat_ai">💬 Chat AI</option>
+                            <option value="facebook">📘 Facebook</option>
+                            <option value="zalo">💬 Zalo</option>
+                            <option value="gioi_thieu">🤝 Giới thiệu</option>
+                            <option value="thu_cong">✍️ Thủ công</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Mức độ ưu tiên</label>
+                        <select class="form-select" id="leadPriority">
+                            <option value="hot">🔥 Hot - Quan tâm ngay</option>
+                            <option value="high">⬆️ Cao - Đang cân nhắc</option>
+                            <option value="normal" selected>→ Bình thường</option>
+                            <option value="low">⬇️ Thấp - Xem cho biết</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ghi chú thêm</label>
+                    <textarea class="form-textarea" id="leadNotes" rows="2" placeholder="Ghi chú về khách hàng..."></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('leadModal')">Hủy</button>
+            <button class="btn btn-primary" onclick="saveLeadForm()">💾 Lưu Khách Hàng</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ MODAL: LEAD DETAIL ════════ -->
+<div class="modal-overlay" id="leadDetailModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="leadDetailTitle"></h2>
+            <button class="modal-close" onclick="closeModal('leadDetailModal')">✕</button>
+        </div>
+        <div class="modal-body" id="leadDetailBody"></div>
+    </div>
+</div>
+
+<!-- ════════ TOAST CONTAINER ════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ════════ SCRIPTS ════════ -->
+<script src="/js/upload.js"></script>
+<script src="/js/properties.js"></script>
+<script src="/js/leads.js"></script>
+<script src="/js/ai.js"></script>
+<script src="/js/app.js"></script>
+<script>
+// Extra inline helpers
+
+function quickPrompt(text) {
+    const ta = document.getElementById('chatInput');
+    if (!ta) return;
+    ta.value = text;
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+    switchTab('chat');
+    ta.focus();
+}
+
+function clearChatHistory() {
+    if (confirm('Xóa toàn bộ lịch sử chat?')) {
+        ai.clearHistory();
+        document.getElementById('chatMessages').innerHTML = '';
+        // Re-greet
+        addAIMessage('Chat mới bắt đầu! 🏠 Tôi là **ARIA**, chuyên gia BĐS AI. Bạn muốn tư vấn gì hôm nay?');
+        toast('Đã xóa lịch sử chat', 'info');
+    }
+}
+
+function applyPropFilter() {
+    renderProperties({
+        search: document.getElementById('propSearch')?.value,
+        type:   document.getElementById('filterType')?.value,
+        status: document.getElementById('filterStatus')?.value
+    });
+}
+
+function handleTopbarAction() {
+    const tab = window._currentTab || 'chat';
+    if (tab === 'properties') openAddPropModal();
+    else if (tab === 'leads') openAddLeadModal();
+    else openAddPropModal(), switchTab('properties');
+}
+
+// Update topbar action button based on tab
+document.querySelectorAll('.nav-item').forEach(n => {
+    n.addEventListener('click', () => {
+        const tab = n.dataset.tab;
+        const btn = document.getElementById('topbarActionBtn');
+        const labels = {
+            chat:       '💬 Chat mới',
+            properties: '➕ Thêm BĐS',
+            leads:      '➕ Thêm lead',
+            content:    '✨ Tạo nội dung',
+            dashboard:  '🔄 Làm mới'
+        };
+        if (btn) btn.textContent = labels[tab] || '➕ Thêm';
+    });
+});
+
+// Init drag & drop for property image zone
+document.addEventListener('DOMContentLoaded', () => {
+    const zone = document.getElementById('propUploadZone');
+    if (zone) {
+        ImageUploadHandler.initDropZone(zone, async (files) => {
+            const results = await ImageUploadHandler.filesToBase64Array(files);
+            results.forEach(r => _propImages.push(r.dataUrl));
+            renderPropImagePreview();
+            toast(`Đã thêm ${files.length} ảnh`, 'success');
+        });
+    }
+});
+</script>
+</body>
+</html>

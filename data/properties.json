@@ -1,0 +1,230 @@
+[
+  {
+    "id": "BDS001",
+    "title": "Nhà phố 3 tầng Quận Bình Thạnh - Mặt tiền đường lớn",
+    "type": "nha_pho",
+    "status": "dang_ban",
+    "address": {
+      "full": "125/3 Đường Nơ Trang Long, Phường 12, Quận Bình Thạnh, TP.HCM",
+      "street": "125/3 Đường Nơ Trang Long",
+      "ward": "Phường 12",
+      "district": "Quận Bình Thạnh",
+      "city": "TP.HCM",
+      "googleMapLink": "https://maps.google.com/?q=10.812345,106.712345",
+      "coordinates": { "lat": 10.8123, "lng": 106.7123 }
+    },
+    "price": {
+      "value": 8500000000,
+      "unit": "vnd",
+      "negotiable": true,
+      "pricePerM2": 56000000,
+      "priceDisplay": "8.5 tỷ"
+    },
+    "area": {
+      "total": 152,
+      "usable": 270,
+      "frontage": 5,
+      "depth": 30.4
+    },
+    "legal": {
+      "soSo": "BS 012345",
+      "loaiSo": "so_hong",
+      "soTo": "15",
+      "soThua": "234",
+      "soSoLink": "https://dichvucong.monre.gov.vn/",
+      "quyHoachLink": "https://quyhoach.hochiminhcity.gov.vn/",
+      "tinhTrangPhapLy": "co_so_day_du",
+      "ngayCapSo": "2019-08-20",
+      "ghiChuPhapLy": "Sổ hồng chính chủ, không tranh chấp, không thế chấp"
+    },
+    "owner": {
+      "name": "Nguyễn Văn Minh",
+      "phone": "0901234567",
+      "phone2": "0281234567",
+      "isDirectOwner": true,
+      "note": "Chủ nhà cần bán gấp vì định cư nước ngoài. Có thể gặp trực tiếp tại nhà."
+    },
+    "agent": {
+      "name": "Trần Thị Lan",
+      "phone": "0907654321"
+    },
+    "features": {
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "floors": 3,
+      "parking": true,
+      "direction": "Đông Nam",
+      "view": "Đường phố",
+      "amenities": ["Sân thượng", "Phòng thờ", "Bếp hiện đại", "Camera an ninh"]
+    },
+    "media": {
+      "images": [],
+      "video": "",
+      "virtualTour": ""
+    },
+    "description": "Nhà phố 3 tầng mặt tiền đường Nơ Trang Long rộng lớn, vị trí đắc địa, giao thông thuận tiện. Nhà xây mới 2019, nội thất cao cấp. Phù hợp ở hoặc kinh doanh.",
+    "highlights": ["Mặt tiền đường lớn 8m", "Gần chợ Thị Nghè", "Pháp lý sạch", "Có thể kinh doanh"],
+    "marketingContent": {
+      "facebook": "",
+      "zalo": "",
+      "email": ""
+    },
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-06-10",
+    "viewCount": 45,
+    "inquiryCount": 8,
+    "tags": ["mat-tien", "quan-binh-thanh", "nha-pho", "3-tang"]
+  },
+  {
+    "id": "BDS002",
+    "title": "Đất nền thổ cư Bình Dương - SHR - Gần KCN VSIP 2",
+    "type": "dat_nen",
+    "status": "dang_ban",
+    "address": {
+      "full": "Đường số 5, Khu dân cư An Phú, Phường An Phú, Thành phố Thuận An, Bình Dương",
+      "street": "Đường số 5, KDC An Phú",
+      "ward": "Phường An Phú",
+      "district": "Thành phố Thuận An",
+      "city": "Bình Dương",
+      "googleMapLink": "https://maps.google.com/?q=10.912345,106.712345",
+      "coordinates": { "lat": 10.9123, "lng": 106.7234 }
+    },
+    "price": {
+      "value": 1850000000,
+      "unit": "vnd",
+      "negotiable": true,
+      "pricePerM2": 15416666,
+      "priceDisplay": "1.85 tỷ"
+    },
+    "area": {
+      "total": 120,
+      "usable": 120,
+      "frontage": 6,
+      "depth": 20
+    },
+    "legal": {
+      "soSo": "BD 567890",
+      "loaiSo": "so_do",
+      "soTo": "08",
+      "soThua": "112",
+      "soSoLink": "https://dichvucong.binhduong.gov.vn/",
+      "quyHoachLink": "https://quyhoach.binhduong.gov.vn/",
+      "tinhTrangPhapLy": "co_so_day_du",
+      "ngayCapSo": "2021-03-15",
+      "ghiChuPhapLy": "Sổ đỏ riêng, thổ cư 100%, đường bê tông 6m"
+    },
+    "owner": {
+      "name": "Lê Thị Hương",
+      "phone": "0912345678",
+      "phone2": "",
+      "isDirectOwner": true,
+      "note": "Chính chủ. Cần tiền làm ăn nên bán dưới thị trường."
+    },
+    "agent": {
+      "name": "Phạm Văn Hùng",
+      "phone": "0909876543"
+    },
+    "features": {
+      "bedrooms": 0,
+      "bathrooms": 0,
+      "floors": 0,
+      "parking": false,
+      "direction": "Tây Nam",
+      "view": "Đường nội bộ",
+      "amenities": ["Gần trường học", "Gần chợ", "Điện nước đầy đủ", "Xây dựng ngay"]
+    },
+    "media": {
+      "images": [],
+      "video": "",
+      "virtualTour": ""
+    },
+    "description": "Lô đất thổ cư 120m2 tại KDC An Phú, Thuận An. Khu dân cư hiện hữu đông đúc, hạ tầng hoàn thiện. Phù hợp xây nhà ở hoặc đầu tư cho thuê công nhân KCN.",
+    "highlights": ["Sổ đỏ riêng", "Thổ cư 100%", "Gần KCN VSIP 2", "Giá đầu tư tốt"],
+    "marketingContent": {
+      "facebook": "",
+      "zalo": "",
+      "email": ""
+    },
+    "createdAt": "2024-02-20",
+    "updatedAt": "2024-06-15",
+    "viewCount": 32,
+    "inquiryCount": 5,
+    "tags": ["dat-nen", "binh-duong", "shr", "thuan-an"]
+  },
+  {
+    "id": "BDS003",
+    "title": "Căn hộ Studio Vinhomes Grand Park Q9 - Full nội thất cao cấp",
+    "type": "can_ho",
+    "status": "cho_thue",
+    "address": {
+      "full": "Vinhomes Grand Park, Đường Nguyễn Xiển, Phường Long Bình, TP. Thủ Đức, TP.HCM",
+      "street": "Đường Nguyễn Xiển",
+      "ward": "Phường Long Bình",
+      "district": "TP. Thủ Đức",
+      "city": "TP.HCM",
+      "googleMapLink": "https://maps.google.com/?q=10.845678,106.845678",
+      "coordinates": { "lat": 10.8456, "lng": 106.8456 }
+    },
+    "price": {
+      "value": 7000000,
+      "unit": "vnd/thang",
+      "negotiable": false,
+      "pricePerM2": 0,
+      "priceDisplay": "7 triệu/tháng"
+    },
+    "area": {
+      "total": 29,
+      "usable": 29,
+      "frontage": 0,
+      "depth": 0
+    },
+    "legal": {
+      "soSo": "VGP-S1.01.0512",
+      "loaiSo": "so_hong",
+      "soTo": "",
+      "soThua": "",
+      "soSoLink": "",
+      "quyHoachLink": "",
+      "tinhTrangPhapLy": "co_so_day_du",
+      "ngayCapSo": "2022-10-01",
+      "ghiChuPhapLy": "Hợp đồng thuê 1-2 năm. Không nuôi thú cưng."
+    },
+    "owner": {
+      "name": "Hoàng Minh Tuấn",
+      "phone": "0938765432",
+      "phone2": "",
+      "isDirectOwner": true,
+      "note": "Ưu tiên người đi làm văn phòng, sinh viên đại học."
+    },
+    "agent": {
+      "name": "",
+      "phone": ""
+    },
+    "features": {
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "floors": 15,
+      "parking": false,
+      "direction": "Đông",
+      "view": "Hồ bơi",
+      "amenities": ["Hồ bơi", "Gym", "Công viên 36ha", "An ninh 24/7", "Siêu thị Vinmart"]
+    },
+    "media": {
+      "images": [],
+      "video": "",
+      "virtualTour": ""
+    },
+    "description": "Căn hộ Studio tầng 15 view hồ bơi, full nội thất cao cấp của Vinhomes. Điều hòa, tủ lạnh, máy giặt, TV, bếp từ đầy đủ. Vào ở ngay.",
+    "highlights": ["View hồ bơi đẹp", "Full nội thất", "Tiện ích 5 sao", "Vào ở ngay"],
+    "marketingContent": {
+      "facebook": "",
+      "zalo": "",
+      "email": ""
+    },
+    "createdAt": "2024-03-01",
+    "updatedAt": "2024-06-18",
+    "viewCount": 67,
+    "inquiryCount": 12,
+    "tags": ["can-ho", "studio", "vinhomes", "cho-thue", "thu-duc"]
+  }
+]
