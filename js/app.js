@@ -132,7 +132,7 @@ async function sendChat() {
     if (!msg && !pending) return;
     if (ai.isProcessing) return;
 
-    // Show user message
+    // Show user message với ảnh preview gốc
     if (pending) {
         addUserMessage(msg || '(Phân tích hình ảnh BĐS)', pending.dataUrl);
     } else {
@@ -147,11 +147,31 @@ async function sendChat() {
     // Show typing indicator
     const typingId = showTyping();
 
-    // Send to AI
+    let imageBase64 = null;
+    let imageMimeType = 'image/jpeg';
+
+    // ── Resize ảnh trước khi gửi (max 800px, JPEG 80%) ──
+    // Giảm payload từ ~5MB → ~200KB, Groq xử lý nhanh hơn
+    if (pending?.dataUrl) {
+        try {
+            const resizedDataUrl = await ImageUploadHandler.resizeBase64(pending.dataUrl, 800);
+            imageBase64 = resizedDataUrl.split(',')[1];
+            imageMimeType = 'image/jpeg';
+            const origKB = Math.round(pending.dataUrl.length * 0.75 / 1024);
+            const newKB  = Math.round(imageBase64.length * 0.75 / 1024);
+            console.log(`📸 Ảnh resize: ${origKB}KB → ${newKB}KB`);
+        } catch (e) {
+            // Fallback: dùng ảnh gốc
+            imageBase64 = pending.base64;
+            imageMimeType = pending.mimeType || 'image/jpeg';
+        }
+    }
+
+    // Gửi lên AI (Groq Vision nếu có ảnh, DeepSeek nếu text)
     const result = await ai.sendMessage(
         msg || 'Hãy phân tích chi tiết bất động sản trong hình ảnh này.',
-        pending?.base64 || null,
-        pending?.mimeType || 'image/jpeg'
+        imageBase64,
+        imageMimeType
     );
 
     hideTyping(typingId);
@@ -159,14 +179,9 @@ async function sendChat() {
 
     if (result) {
         addAIMessage(result.reply, result.error);
-
-        // Handle AI actions
-        if (result.action) {
-            handleAIAction(result.action);
-        }
+        if (result.action) handleAIAction(result.action);
     }
 
-    // Update property sidebar
     renderChatSidebar();
 }
 
